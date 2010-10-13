@@ -1,12 +1,11 @@
 module Tropo
   class Message
 
-    attr_accessor :params
-    attr_accessor :tropo_session
+    attr_accessor :params, :tropo_session
 
-    def initialize(options = {})
-      @params = options[:params] || {}
-      @tropo_session = options[:tropo_session] || {}
+    def initialize(tropo_session = {})
+      @params = {}
+      @tropo_session = tropo_session
     end
 
     def parse(tropo_session)
@@ -17,12 +16,20 @@ module Tropo
       params["token"] || tropo_parameters["token"]
     end
 
+    def token=(value)
+      params["token"] = value
+    end
+
     def action
-      tropo_parameters["action"] || "create"
+      tropo_parameters["action"]
     end
 
     def to
       params["to"] || tropo_parameters["to"]
+    end
+
+    def to=(value)
+      params["to"] = value
     end
 
     def channel
@@ -30,7 +37,7 @@ module Tropo
     end
 
     def network
-      params["channel"] || tropo_parameters["channel"] || 'SMS'
+      params["network"] || tropo_parameters["network"] || 'SMS'
     end
 
     def text
@@ -38,8 +45,17 @@ module Tropo
     end
     alias :msg :text
 
+    def text=(value)
+      params["text"] = value
+    end
+    alias :msg= :text=
+
     def from
       params["from"] || tropo_parameters["from"]
+    end
+
+    def from=(value)
+      params["from"] = value
     end
 
     def timeout
@@ -55,7 +71,7 @@ module Tropo
     end
 
     def recording
-      params["headers"] || tropo_parameters["recording"]
+      params["recording"] || tropo_parameters["recording"]
     end
 
     def outgoing?
@@ -76,11 +92,14 @@ module Tropo
       params
     end
 
-    def request_params
-      response_params.merge(
-        "token" => token,
-        "action" => action
-      )
+    def request_xml
+      request_params = @params.dup
+      token = request_params.delete("token")
+      xml = ""
+      request_params.each do |key, value|
+        xml << "<var name=\"#{key}\" value=\"#{value}\"/>"
+      end
+      "<sessions><token>#{token}</token>#{xml.to_s}</sessions>"
     end
 
     private
