@@ -14,7 +14,7 @@ tropo_message is a tiny gem that simplifies sending messages using [Tropo](http:
 
 See also: <http://blog.tropo.com/2010/09/10/how-to-sending-an-sms-using-webapi>
 
-### Receive message and responding to Tropo (inside your listener)
+### Receive message and respond to Tropo (inside your listener)
     tropo_session = Tropo::Generator.parse(raw_json)
 
     message = Tropo::Message.new(tropo_session)
