@@ -71,7 +71,7 @@ module Tropo
     end
 
     def outgoing?
-      tropo_parameters["session"] && tropo_parameters["session"]["parameters"]
+      tropo_session["session"] && tropo_session["session"]["parameters"]
     end
 
     def response_params
