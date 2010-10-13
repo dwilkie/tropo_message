@@ -20,10 +20,6 @@ module Tropo
       params["token"] = value
     end
 
-    def action
-      tropo_parameters["action"]
-    end
-
     def to
       params["to"] || tropo_parameters["to"]
     end
@@ -75,7 +71,7 @@ module Tropo
     end
 
     def outgoing?
-      tropo_parameters["action"] == "create"
+      tropo_parameters["session"] && tropo_parameters["session"]["parameters"]
     end
 
     def response_params
