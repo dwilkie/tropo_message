@@ -93,9 +93,9 @@ module Tropo
       token = request_params.delete("token")
       xml = ""
       request_params.each do |key, value|
-        xml << "<var name=\"#{key}\" value=\"#{value}\"/>"
+        xml << "<var name=\"#{escape(key)}\" value=\"#{escape(value)}\"/>"
       end
-      "<sessions><token>#{token}</token>#{xml.to_s}</sessions>"
+      "<sessions><token>#{token}</token>#{xml}</sessions>"
     end
 
     private
@@ -103,6 +103,27 @@ module Tropo
         session = tropo_session["session"]
         parameters = session["parameters"] if session
         parameters || {}
+      end
+
+      # Performs URI escaping so that you can construct proper
+      # query strings faster. Use this rather than the cgi.rb
+      # version since it's faster. (Stolen from Camping).
+      def escape(s)
+        s.to_s.gsub(/([^ a-zA-Z0-9_.-]+)/n) {
+          '%'+$1.unpack('H2'*bytesize($1)).join('%').upcase
+        }.tr(' ', '+')
+      end
+
+      # Return the bytesize of String; uses String#length under Ruby 1.8 and
+      # String#bytesize under 1.9.
+      if ''.respond_to?(:bytesize)
+        def bytesize(string)
+          string.bytesize
+        end
+      else
+        def bytesize(string)
+          string.size
+        end
       end
   end
 end
