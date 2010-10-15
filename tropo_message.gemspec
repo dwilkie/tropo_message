@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{tropo_message}
-  s.version = "0.0.4"
+  s.version = "0.0.5"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["David Wilkie"]
-  s.date = %q{2010-10-14}
+  s.date = %q{2010-10-15}
   s.description = %q{A tiny wrapper for creating a Tropo message}
   s.email = %q{dwilkie@gmail.com}
   s.extra_rdoc_files = [
@@ -24,6 +24,8 @@ Gem::Specification.new do |s|
      "Rakefile",
      "VERSION",
      "lib/tropo_message.rb",
+     "spec/spec_helper.rb",
+     "spec/tropo_messsage_spec.rb",
      "tropo_message.gemspec"
   ]
   s.homepage = %q{http://github.com/dwilkie/tropo_message}
@@ -31,6 +33,10 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.3.7}
   s.summary = %q{A tiny wrapper for creating a Tropo message}
+  s.test_files = [
+    "spec/tropo_messsage_spec.rb",
+     "spec/spec_helper.rb"
+  ]
 
   if s.respond_to? :specification_version then
     current_version = Gem::Specification::CURRENT_SPECIFICATION_VERSION
