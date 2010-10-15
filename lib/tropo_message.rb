@@ -109,19 +109,19 @@ module Tropo
 
     # Getter/Setter methods
     def action
-      params["action"] || tropo_parameters["action"]
+      params["action"] || unescape(tropo_parameters["action"])
     end
 
     def answer_on_media
-      params["answer_on_media"] || tropo_parameters["answer_on_media"]
+      params["answer_on_media"] || unescape(tropo_parameters["answer_on_media"])
     end
 
     def channel
-      params["channel"] || tropo_parameters["channel"] || "TEXT"
+      params["channel"] || unescape(tropo_parameters["channel"]) || "TEXT"
     end
 
     def from
-      params["from"] || tropo_parameters["from"]
+      params["from"] || unescape(tropo_parameters["from"])
     end
 
     def from=(value)
@@ -129,19 +129,19 @@ module Tropo
     end
 
     def headers
-      params["headers"] || tropo_parameters["headers"]
+      params["headers"] || unescape(tropo_parameters["headers"])
     end
 
     def network
-      params["network"] || tropo_parameters["network"] || "SMS"
+      params["network"] || unescape(tropo_parameters["network"]) || "SMS"
     end
 
     def recording
-      params["recording"] || tropo_parameters["recording"]
+      params["recording"] || unescape(tropo_parameters["recording"])
     end
 
     def text
-      params["text"] || tropo_parameters["text"]
+      params["text"] || unescape(tropo_parameters["text"])
     end
 
     def text=(value)
@@ -149,11 +149,11 @@ module Tropo
     end
 
     def timeout
-      params["timeout"] || tropo_parameters["timeout"]
+      params["timeout"] || unescape(tropo_parameters["timeout"])
     end
 
     def to
-      params["to"] || tropo_parameters["to"]
+      params["to"] || unescape(tropo_parameters["to"])
     end
 
     def to=(value)
@@ -182,6 +182,13 @@ module Tropo
         s.to_s.gsub(/([^ a-zA-Z0-9_.-]+)/n) {
           '%'+$1.unpack('H2'*bytesize($1)).join('%').upcase
         }.tr(' ', '+')
+      end
+
+     # Unescapes a URI escaped string. (Stolen from Camping).
+      def unescape(s)
+        s.tr('+', ' ').gsub(/((?:%[0-9a-fA-F]{2})+)/n){
+          [$1.delete('%')].pack('H*')
+        } if s
       end
 
       # Return the bytesize of String; uses String#length under Ruby 1.8 and

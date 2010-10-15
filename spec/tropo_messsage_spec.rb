@@ -13,16 +13,16 @@ describe Tropo::Message do
         "call_id"=>nil,
         "parameters"=>{
           "token" => "123451234512345123451234512345123451234512345",
-          "text"=>"Hi%2C+how+r+u+today+%3A+my+friend+%3Cyour+name",
-          "to"=>"612382211234",
-          "from" => "661213433198",
-          "channel" => "SomeChannel",
-          "network" => "SomeNetwork",
-          "action" => "SomeAction",
-          "timeout" => "SomeTimeout",
-          "answer_on_media" => "Phone",
-          "headers" => "MyCustomHeaders",
-          "recording" => "MyRecording"
+          "text"=>"Hi%2C+how+r+u+today+%3A+my+friend+%3Cyour+name%3E",
+          "to"=>"%2B612382211234",
+          "from" => "%2B661213433198",
+          "channel" => "Some%2BChannel",
+          "network" => "Some%2BNetwork",
+          "action" => "Some%2BAction",
+          "timeout" => "Some%2BTimeout",
+          "answer_on_media" => "The%2BPhone",
+          "headers" => "My%2BCustom%2BHeaders",
+          "recording" => "My%2BRecording"
         }
       }
     }
@@ -84,14 +84,14 @@ describe Tropo::Message do
       it "should include all the required and optional parameters" do
         tropo_message.parse(tropo_session)
         tropo_message.response_params.should == {
-          "to" => "612382211234",
-          "channel" => "SomeChannel",
-          "network" => "SomeNetwork",
-          "from" => "661213433198",
-          "timeout" => "SomeTimeout",
-          "answer_on_media" => "Phone",
-          "headers" => "MyCustomHeaders",
-          "recording" => "MyRecording"
+          "to" => "+612382211234",
+          "channel" => "Some+Channel",
+          "network" => "Some+Network",
+          "from" => "+661213433198",
+          "timeout" => "Some+Timeout",
+          "answer_on_media" => "The+Phone",
+          "headers" => "My+Custom+Headers",
+          "recording" => "My+Recording"
         }
       end
     end
@@ -103,7 +103,7 @@ describe Tropo::Message do
       it "should include all the required parameters" do
         tropo_message.parse(tropo_session)
         tropo_message.response_params.should == {
-          "to" => "612382211234",
+          "to" => "+612382211234",
           "channel" => "TEXT",
           "network" => "SMS",
         }
@@ -136,9 +136,9 @@ describe Tropo::Message do
       end
     end
     context "responding to tropo" do
-      it "should return the receiver from the session parameters" do
+      it "should return the receiver (unescapted) from the session parameters" do
         tropo_message.parse(tropo_session)
-        tropo_message.to.should == "612382211234"
+        tropo_message.to.should == "+612382211234"
       end
     end
   end
@@ -153,7 +153,7 @@ describe Tropo::Message do
     context "responding to tropo" do
       it "should return the sender from the session parameters" do
         tropo_message.parse(tropo_session)
-        tropo_message.from.should == "661213433198"
+        tropo_message.from.should == "+661213433198"
       end
     end
   end
@@ -168,7 +168,7 @@ describe Tropo::Message do
     context "responding to tropo" do
       it "should return the text from the session parameters" do
         tropo_message.parse(tropo_session)
-        tropo_message.text.should == "Hi%2C+how+r+u+today+%3A+my+friend+%3Cyour+name"
+        tropo_message.text.should == "Hi, how r u today : my friend <your name>"
       end
     end
   end
@@ -186,7 +186,7 @@ describe Tropo::Message do
       context "'channel' is in the session parameters" do
         it "should return the channel from the session parameters" do
           tropo_message.parse(tropo_session)
-          tropo_message.channel.should == "SomeChannel"
+          tropo_message.channel.should == "Some+Channel"
         end
       end
       context "'channel' is not in the session parameters" do
@@ -212,7 +212,7 @@ describe Tropo::Message do
       context "'network' is in the session parameters" do
         it "should return the network from the session parameters" do
           tropo_message.parse(tropo_session)
-          tropo_message.network.should == "SomeNetwork"
+          tropo_message.network.should == "Some+Network"
         end
       end
       context "'network' is not in the session parameters" do
@@ -239,7 +239,7 @@ describe Tropo::Message do
       context "'action' is in the session parameters" do
         it "should return the action from the session parameters" do
           tropo_message.parse(tropo_session)
-          tropo_message.action.should == "SomeAction"
+          tropo_message.action.should == "Some+Action"
         end
       end
       context "'action' is not in the session parameters" do
@@ -265,7 +265,7 @@ describe Tropo::Message do
       context "'timeout' is in the session parameters" do
         it "should return the timeout from the session parameters" do
           tropo_message.parse(tropo_session)
-          tropo_message.timeout.should == "SomeTimeout"
+          tropo_message.timeout.should == "Some+Timeout"
         end
       end
       context "'timeout' is not in the session parameters" do
@@ -291,7 +291,7 @@ describe Tropo::Message do
       context "'answer_on_media' is in the session parameters" do
         it "should return 'answer_on_media' from the session parameters" do
           tropo_message.parse(tropo_session)
-          tropo_message.answer_on_media.should == "Phone"
+          tropo_message.answer_on_media.should == "The+Phone"
         end
       end
       context "'answer_on_media' is not in the session parameters" do
@@ -317,7 +317,7 @@ describe Tropo::Message do
       context "'headers' is in the session parameters" do
         it "should return the headers from the session parameters" do
           tropo_message.parse(tropo_session)
-          tropo_message.headers.should == "MyCustomHeaders"
+          tropo_message.headers.should == "My+Custom+Headers"
         end
       end
       context "'headers' is not in the session parameters" do
@@ -343,7 +343,7 @@ describe Tropo::Message do
       context "'recording' is in the session parameters" do
         it "should return the recording from the session parameters" do
           tropo_message.parse(tropo_session)
-          tropo_message.recording.should == "MyRecording"
+          tropo_message.recording.should == "My+Recording"
         end
       end
       context "'recording' is not in the session parameters" do
