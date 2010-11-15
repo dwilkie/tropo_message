@@ -47,7 +47,7 @@ module Tropo
     #   #   <token>1234512345</token>
     #   #   <var name="to" value="44122782474"/>
     #   #   <var name="text" value="Hi+John%2C+how+r+u+today%3F"/>
-    #   #  </sessions>"
+    #   # </sessions>"
     #
     def request_xml
       request_params = @params.dup
